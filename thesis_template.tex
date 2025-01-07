@@ -1,0 +1,239 @@
+% 文字コードは UTF-8
+\documentclass[xelatex,a4paper,base=11pt,twoside,ja=standard]{bxjsarticle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%日本語組版とフォントの処理
+\usepackage{zxjatype} %日本語の組版処理
+\setmainfont{Times New Roman} %\rffamilyをTimes New Romanに。
+\setsansfont{SF-Pro.ttf} %\gtfamilyをSF-Proに
+\usepackage[haranoaji]{zxjafont} %日本語で原の味フォントを使う
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%グロス付き例文
+\usepackage{expex} %グロス付き例文など
+\lingset{
+    glhangstyle=none,%グロスが折り返してもぶら下げにしない
+    belowglpreambleskip=0pt,
+    aboveglftskip=0pt
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%略号とインデックス
+\usepackage{makeidx} %インデックス
+\makeindex
+\usepackage[nonumberlist,mcolblock]{leipzig} %グロス略号
+\makeglossaries
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%引用
+\usepackage{natbib} %自然科学用文献処理
+\bibpunct[:]{(}{)}{,}{a}{}{,} %引用した際の表示オプション
+\usepackage{url} %urlを表示する
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ハイパーリンク
+\usepackage[unicode]{hyperref}
+
+\hypersetup{% hyperrefオプションリスト
+setpagesize=false,%
+bookmarks=true,%
+bookmarksnumbered=true,%
+bookmarksopen=true,%
+colorlinks=true,% 
+linkcolor=black,%内部参照用リンクカラー
+citecolor=black,%参考文献用リンクカラー
+urlcolor=black %url用リンクカラー
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%その他
+\usepackage{enumitem} %箇条書き
+\usepackage{ascmac} %囲みなど
+\usepackage{here} %図表を指定位置に
+\usepackage{color} %色
+\definecolor{mygreyl}{rgb}{0.86,0.86,0.86}
+\definecolor{myyellow}{rgb}{1,1,0.3}
+\definecolor{myblue}{rgb}{0.82,0.91,0.94}
+\definecolor{mygreen}{rgb}{0.7,0.81,0.54}
+\usepackage{tcolorbox} %囲み線など
+\usepackage{booktabs} %表の線
+\usepackage{multicol} %マルチカラム
+\usepackage{multirow}
+%\usepackage{endnotes} %後注の場合コメントアウトを外す
+%\let\footnote=\endnote
+\usepackage{graphicx} %画像
+\graphicspath{{./image/}} %画像のパス
+\usepackage{tipa} %IPA記号
+\usepackage{qtree}
+\usepackage{dirtree}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%カスタム命令
+\newcommand{\cl}[1]{\noindent `{#1}'} %シングルクォーテーション
+\newcommand{\qo}[1]{\noindent ``{#1}''} %ダブルクォーテーション
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%:例文番号に章番号が追加されるようにする
+%\counterwithin{exx}{chapter} % reset example counter every chapter
+%\makeatletter
+%\@addtoreset{xnumi}{chapter}
+%\def\thexnumi{\thechapter-\@xsi{xnumi}}
+%\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%:目次のドット体裁整え
+\makeatletter
+\renewcommand{\@dotsep}{2}
+\makeatother
+
+%:脚注をアラビア数字にする
+\renewcommand\thefootnote{\arabic{footnote}}
+
+%:目次に反映させるセクションの深さ
+%subsubsectionまで表示させたいなら3を、subsubsubsectionまで表示させたいなら4を指定してください。
+\setcounter{tocdepth}{4}
+
+
+%:subsubsubsection の定義
+  \makeatletter
+  \newcommand{\subsubsubsection}{\@startsection{paragraph}{4}{\z@}%
+    {.5\Cvs \@plus.5\Cdp \@minus.2\Cdp}%
+    {.5\Cvs}%
+    {\reset@font\bf\normalsize}
+  }
+  \makeatother
+  \setcounter{secnumdepth}{4}
+%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+%: セクション名の指定
+\renewcommand{\headfont}{\bfseries} %チャプターやセクションをboldにする
+\renewcommand{\contentsname}{目次} %目次
+\renewcommand{\listfigurename}{図一覧} %図目次
+\renewcommand{\listtablename}{表一覧} %表目次
+\renewcommand{\figurename}{図} %図
+\renewcommand{\tablename}{表} %表
+\renewcommand{\appendixname}{付録} %アペンディクス
+\renewcommand{\refname}{参照文献} %参照文献
+\renewcommand{\indexname}{インデックス} %インデックス
+\renewcommand{\leipzigname}{略号一覧}
+
+%\renewcommand{\prechaptername}{} %章の前につける文字
+%\renewcommand{\postchaptername}{} %章番号の後につける文字(英語なら空白でよい)
+%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%: タイトルの整形
+%以下の部分でタイトルの書式設定をしています。設定を変えるか、もしくは表紙自体をつけたくない時はここをいじってください。
+\makeatletter
+\def\@maketitle{
+\begin{center}
+\vspace*{50mm}
+{\Huge\mc \@title \par}% 
+\vspace{70mm}
+{\Large \@department \par} % 
+{\Large \@id \par} % 
+{\Large \@adyear \par} %
+{\Large \@author \par}%
+{\Large \@date \par} %
+\end{center}
+
+}
+
+%ここで表紙に使う各引数の入力をしています。タイトル、著者、入学年度、etc. を変えたいか、または表示したくない時はここをいじってください。
+\def\id#1{\def\@id{#1}}
+\def\department#1{\def\@department{#1}}
+\def\adyear#1{\def\@adyear{#1}}
+\def\class#1{\def\@class{#1}}
+\def\professor#1{\def\@professor{#1}}
+
+\title{卒論タイトル}
+\date{1月1日提出}
+\department{言語学・応用言語学専攻}
+\adyear{20XX年度入学}
+\id{学籍番号: XXXXXXXX}
+\author{加藤幹治 (jiateng.ganzhi@gmail.com)}
+\class{}
+\professor{Noam Chomsky}
+%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\begin{document}
+
+\bibliographystyle{jecon_kato.bst}
+
+\maketitle
+\thispagestyle{empty} %このページにはページ数をつけない
+\newpage %改ページ
+\pagenumbering{roman}%ここからはローマ数字でページ番号をつける
+
+\addcontentsline{toc}{section}{目次}
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\addcontentsline{toc}{section}{図目次}
+\listoffigures
+\newpage
+
+\addcontentsline{toc}{section}{表目次}
+\listoftables
+\newpage
+
+\pagenumbering{arabic} % ここからはアラビア数字でページ番号をつける
+
+\section{セクション}
+\subsection{サブセクション}
+\subsubsection{サブサブセクション}
+\subsubsubsection{サブサブサブセクション}
+
+\section{図表}
+\begin{table}[h]
+    \centering
+    \caption{都道府県}
+    \label{tab:prefecture}
+    \begin{tabular}{l|l}\toprule
+        都道府県 & 県庁所在地\\\hline
+        北海道 & 札幌\\
+        東京 & 新宿\\
+        沖縄 & 那覇\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=50truemm]{liver.png}
+\caption{肝臓}
+\label{fig:liver}
+\end{figure}
+
+\section{相互参照}
+図\ref{fig:liver}と表\ref{tab:prefecture}を参照。
+
+\section{例文}
+\subsection{番号のみ}
+\ex
+これは例文です。
+\xe
+
+\subsection{番号+アルファベット}
+\pex
+\a 2つ目の例文です。
+\a 3つ目の例文です。
+\xe
+
+\subsection{インターリニアグロス}
+\ex
+\begingl
+\glpreamble 糸満方言の例//
+\gla uree reibun jassa//
+\glb uri=ja reibun ja-sa//
+\glc これ=\Top{} 例文 \Cop{}-よ//
+\glft 「これは例文だよ」//
+\endgl
+\xe
+
+\section{引用}
+著者(年): \citet[89]{kiparsky1968}
+
+（著者 年）: \citep[100]{paul1978}
+
+著者 年: \citealp[10]{shibatani1978}
+
+\printglossaries
+
+%\theendnotes %後注の場合コメントアウトを外す
+\bibliography{sample.bib}
+\end{document}
